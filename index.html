@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observatório dos Grupos de Trabalho</title>
+<meta name="description" content="Rastreador de todos os grupos de trabalho criados por despacho do Governo português desde 2 de abril de 2024: prazos, estado de execução e evidência, com ligação ao Diário da República.">
+<meta name="author" content="">
+<link rel="canonical" href="https://EXEMPLO.github.io/observatorio-gt/">
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_PT">
+<meta property="og:site_name" content="Observatório dos Grupos de Trabalho">
+<meta property="og:title" content="Observatório dos Grupos de Trabalho">
+<meta property="og:description" content="Rastreador de todos os grupos de trabalho criados por despacho do Governo português desde 2 de abril de 2024: prazos, estado de execução e evidência, com ligação ao Diário da República.">
+<meta property="og:url" content="https://EXEMPLO.github.io/observatorio-gt/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Observatório dos Grupos de Trabalho">
+<meta name="twitter:description" content="Rastreador de todos os grupos de trabalho criados por despacho do Governo português desde 2 de abril de 2024: prazos, estado de execução e evidência, com ligação ao Diário da República.">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>%F0%9F%8F%9B%EF%B8%8F</text></svg>">
+<style>
+  *{box-sizing:border-box}
+  html{color-scheme:light dark}
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+:root{
+  --paper:#EFF1F5; --card:#FFFFFF; --card-2:#F7F8FB;
+  --ink:#14171E; --ink-2:#39404F; --muted:#666E80; --faint:#8A92A3;
+  --line:#DCE0E9; --line-2:#C7CDDA;
+  --accent:#2A3F6B; --accent-soft:#E7EBF4;
+
+  --s-ontime:#009184; --s-late:#BE7A0E; --s-running:#3560BE;
+  --s-overdue:#B63329; --s-extended:#8A44CC; --s-gone:#6B6F76; --s-unknown:#9AA0A8;
+
+  --grid:#E6E9F0;
+  --shadow:0 1px 2px rgba(20,23,30,.05), 0 8px 24px -12px rgba(20,23,30,.14);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#101219; --card:#171A22; --card-2:#1D2029;
+    --ink:#E9ECF3; --ink-2:#C2C8D6; --muted:#949BAB; --faint:#747C8D;
+    --line:#272B36; --line-2:#333947;
+    --accent:#9FB4E0; --accent-soft:#1C2332;
+
+    --s-ontime:#19A08F; --s-late:#BC8318; --s-running:#6B8FE0;
+    --s-overdue:#E06A5E; --s-extended:#9E72D6; --s-gone:#8C9199; --s-unknown:#6F7682;
+
+    --grid:#232733;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101219; --card:#171A22; --card-2:#1D2029;
+  --ink:#E9ECF3; --ink-2:#C2C8D6; --muted:#949BAB; --faint:#747C8D;
+  --line:#272B36; --line-2:#333947;
+  --accent:#9FB4E0; --accent-soft:#1C2332;
+  --s-ontime:#19A08F; --s-late:#BC8318; --s-running:#6B8FE0;
+  --s-overdue:#E06A5E; --s-extended:#9E72D6; --s-gone:#8C9199; --s-unknown:#6F7682;
+  --grid:#232733;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 28px -14px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:15px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1180px; margin:0 auto; padding:0 24px 72px}
+h1,h2,h3{font-family:Spectral,Georgia,"Times New Roman",serif; text-wrap:balance; margin:0}
+a{color:var(--accent)}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace; font-variant-numeric:tabular-nums}
+.eyebrow{
+  font-size:11px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--muted); font-weight:600;
+}
+
+/* ---------- masthead ---------- */
+header.mast{
+  border-bottom:1px solid var(--line); background:var(--card);
+  margin-bottom:32px;
+}
+.mast-in{max-width:1180px; margin:0 auto; padding:30px 24px 26px;
+  display:grid; grid-template-columns:minmax(0,1fr) auto; gap:28px; align-items:end}
+h1{font-size:clamp(30px,4.2vw,44px); font-weight:600; letter-spacing:-.015em; line-height:1.08}
+.sub{margin-top:10px; color:var(--ink-2); max-width:62ch; font-size:15.5px}
+.asof{text-align:right; white-space:nowrap}
+.asof .d{font-size:13px; color:var(--muted)}
+.asof .n{font-family:Spectral,serif; font-size:30px; font-weight:600; line-height:1.1}
+
+/* ---------- stat tiles ---------- */
+.tiles{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:30px}
+.tile{background:var(--card); border:1px solid var(--line); border-radius:4px; padding:16px 18px 14px}
+.tile .k{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.tile .v{font-family:Spectral,serif; font-size:40px; font-weight:600; line-height:1.05; margin:6px 0 2px;
+  font-variant-numeric:tabular-nums}
+.tile .c{font-size:12.5px; color:var(--muted)}
+.tile.flag{border-left:3px solid var(--s-overdue)}
+.tile.flag .v{color:var(--s-overdue)}
+
+/* ---------- panels ---------- */
+.panel{background:var(--card); border:1px solid var(--line); border-radius:4px; padding:20px 22px 22px; margin-bottom:22px}
+.panel > h2{font-size:19px; font-weight:600; letter-spacing:-.01em}
+.panel > .note{color:var(--muted); font-size:13px; margin-top:4px}
+.grid2{display:grid; grid-template-columns:1.05fr 1fr; gap:22px}
+
+/* ---------- status bar ---------- */
+.statusbar{display:flex; height:30px; border-radius:3px; overflow:hidden; margin:18px 0 14px;
+  border:1px solid var(--line)}
+.statusbar div{position:relative}
+.legend{display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:8px 20px}
+.lg{display:grid; grid-template-columns:11px 1fr auto; gap:9px; align-items:baseline; font-size:13.5px}
+.sw{width:11px; height:11px; border-radius:2px; transform:translateY(1px)}
+.lg .ct{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--ink-2); font-weight:500}
+.lg .pc{color:var(--faint); font-size:12px}
+
+/* ---------- bar charts ---------- */
+.bars{display:grid; gap:7px; margin-top:16px}
+.bar{display:grid; grid-template-columns:142px minmax(0,1fr) 34px; gap:10px; align-items:center; font-size:13px}
+.bar .lab{color:var(--ink-2); text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.bar .track{background:var(--grid); border-radius:0 3px 3px 0; height:16px; position:relative}
+.bar .fill{height:100%; border-radius:0 3px 3px 0; display:block}
+.bar .n{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; color:var(--ink-2); font-size:12.5px}
+.stackrow{display:flex; height:16px; border-radius:0 3px 3px 0; overflow:hidden; gap:2px}
+.stackrow i{display:block; height:100%}
+
+/* month columns */
+.months{display:flex; align-items:flex-end; gap:3px; height:120px; margin-top:18px; padding-bottom:2px}
+.mcol{flex:1; display:flex; flex-direction:column; justify-content:flex-end; gap:2px; min-width:0; position:relative}
+.mcol i{display:block; width:100%}
+.mscale{display:flex; justify-content:space-between; margin-top:7px; font-size:11px; color:var(--faint)}
+.gov-split{display:flex; gap:3px; margin-top:9px; font-size:11.5px; color:var(--muted)}
+.gov-split span{flex:1; text-align:center; padding:3px 0; border-top:2px solid var(--line-2)}
+
+/* ---------- top 10 ---------- */
+.rank{display:grid; gap:2px; margin-top:14px}
+.rk{display:grid; grid-template-columns:22px minmax(0,1fr) 150px 62px; gap:12px; align-items:center;
+  padding:8px 6px; border-bottom:1px solid var(--line); font-size:13.5px}
+.rk:last-child{border-bottom:0}
+.rk .i{font-family:"IBM Plex Mono",monospace; color:var(--faint); font-size:12px; text-align:right}
+.rk .t{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.rk .t b{font-weight:500}
+.rk .t em{font-style:normal; color:var(--muted); font-size:12.5px}
+.rk .tr{background:var(--grid); height:9px; border-radius:0 2px 2px 0}
+.rk .tr i{display:block; height:100%; background:var(--s-overdue); border-radius:0 2px 2px 0}
+.rk .d{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; text-align:right;
+  color:var(--s-overdue); font-weight:500}
+
+/* ---------- controls ---------- */
+.controls{display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:4px 0 16px}
+input[type=search], select{
+  font:inherit; font-size:13.5px; color:var(--ink); background:var(--card-2);
+  border:1px solid var(--line-2); border-radius:3px; padding:7px 10px;
+}
+input[type=search]{min-width:260px; flex:1}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.count{font-size:13px; color:var(--muted); margin-left:auto; font-variant-numeric:tabular-nums}
+.btn{font:inherit; font-size:12.5px; background:var(--card-2); color:var(--ink-2);
+  border:1px solid var(--line-2); border-radius:3px; padding:7px 11px; cursor:pointer}
+.btn:hover{background:var(--accent-soft)}
+
+/* ---------- table ---------- */
+.tblwrap{overflow-x:auto; border:1px solid var(--line); border-radius:4px; background:var(--card)}
+table{border-collapse:collapse; width:100%; min-width:900px; font-size:13.5px}
+thead th{
+  position:sticky; top:0; z-index:2; background:var(--card-2); text-align:left;
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted);
+  font-weight:600; padding:10px 12px; border-bottom:1px solid var(--line-2); white-space:nowrap;
+  cursor:pointer; user-select:none;
+}
+thead th .ar{color:var(--faint); font-size:9px; margin-left:3px}
+tbody td{padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top}
+tbody tr.r{cursor:pointer}
+tbody tr.r:hover{background:var(--card-2)}
+tbody tr.open{background:var(--accent-soft)}
+td.nm{max-width:420px}
+td.nm b{font-weight:500; display:block}
+td.nm em{font-style:normal; color:var(--muted); font-size:12.5px}
+td.ato{white-space:nowrap}
+td.ato a{font-family:"IBM Plex Mono",monospace; font-size:12.5px; text-decoration:none}
+td.ato a:hover{text-decoration:underline}
+td.num{font-family:"IBM Plex Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+.chip{display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+  font-size:12px; font-weight:500; padding:3px 9px 3px 7px; border-radius:11px;
+  border:1px solid currentColor; background:var(--card)}
+.chip .dot{width:7px; height:7px; border-radius:50%; background:currentColor; flex:none}
+.late{color:var(--s-overdue); font-weight:500}
+
+/* expanded detail */
+tr.det td{padding:0; border-bottom:1px solid var(--line-2); background:var(--card-2)}
+.det-in{padding:18px 22px 22px; display:grid; gap:16px}
+.dgrid{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px 26px}
+.f .k{font-size:10.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:3px}
+.f .v{font-size:13.5px; color:var(--ink-2)}
+.f.wide{grid-column:1/-1}
+.quote{border-left:2px solid var(--line-2); padding-left:12px; font-family:Spectral,serif;
+  font-size:14px; color:var(--ink-2); font-style:italic}
+.ev{background:var(--card); border:1px solid var(--line); border-radius:3px; padding:12px 14px; font-size:13px; color:var(--ink-2)}
+.ev a{word-break:break-all}
+.dl{display:grid; gap:7px}
+.dl .one{display:grid; grid-template-columns:minmax(0,1fr); gap:2px; padding:9px 11px;
+  background:var(--card); border:1px solid var(--line); border-radius:3px}
+.dl .one .h{display:flex; gap:10px; align-items:baseline; flex-wrap:wrap}
+.dl .one .h b{font-weight:500; font-size:13px}
+.dl .one .h .dt{font-family:"IBM Plex Mono",monospace; font-size:12.5px; color:var(--accent); font-weight:500}
+.dl .one .calc{font-size:11.5px; color:var(--faint)}
+.dl .one .orig{font-size:12.5px; color:var(--muted); font-style:italic; margin-top:3px}
+
+/* ---------- method ---------- */
+.method{columns:2; column-gap:40px; font-size:13.5px; color:var(--ink-2)}
+.method h3{font-size:14px; margin:0 0 5px; color:var(--ink); break-after:avoid}
+.method p{margin:0 0 13px; break-inside:avoid}
+.method ul{margin:0 0 13px; padding-left:18px}
+.method li{margin-bottom:5px}
+footer{margin-top:26px; padding-top:18px; border-top:1px solid var(--line); color:var(--muted); font-size:12.5px}
+
+@media (max-width:980px){
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .grid2{grid-template-columns:1fr}
+  .method{columns:1}
+  .mast-in{grid-template-columns:1fr; gap:14px}
+  .asof{text-align:left}
+  .rk{grid-template-columns:22px minmax(0,1fr) 62px}
+  .rk .tr{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+
+<header class="mast">
+  <div class="mast-in">
+    <div>
+      <div class="eyebrow">Diário da República · 2.ª série · XXIV e XXV Governos Constitucionais</div>
+      <h1>Observatório dos Grupos de Trabalho</h1>
+      <p class="sub">Todos os grupos de trabalho criados por despacho do Governo desde 2 de abril de 2024 —
+        o que lhes foi pedido, que prazos lhes foram fixados e o que se sabe publicamente sobre o que entregaram.</p>
+    </div>
+    <div class="asof">
+      <div class="d">Dados até</div>
+      <div class="n mono">10.10.2026</div>
+      <div class="d">106 grupos · 100 % com link ao DR</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="tiles" id="tiles"></section>
+
+  <section class="panel">
+    <h2>Estado de execução</h2>
+    <p class="note">Cada grupo tem exatamente um estado. «Em atraso» significa que o prazo do próprio despacho
+      passou e não existe evidência pública de entrega — não que a entrega não tenha ocorrido.</p>
+    <div class="statusbar" id="sbar"></div>
+    <div class="legend" id="slegend"></div>
+  </section>
+
+  <div class="grid2">
+    <section class="panel">
+      <h2>Quem cria grupos de trabalho</h2>
+      <p class="note">Por área governativa que encabeça o despacho; a cor mostra o estado.</p>
+      <div class="bars" id="byMin"></div>
+    </section>
+    <section class="panel">
+      <h2>Ritmo de criação</h2>
+      <p class="note">Grupos criados por mês de publicação no Diário da República.</p>
+      <div class="months" id="byMonth"></div>
+      <div class="mscale"><span>abr 2024</span><span>jun 2025</span><span>out 2026</span></div>
+      <div class="gov-split" id="govSplit"></div>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Os dez mais atrasados</h2>
+    <p class="note">Dias decorridos desde o prazo de entrega fixado no despacho, contados até 10 de outubro de 2026.
+      Exclui grupos cujo único prazo é administrativo (designar representantes) e grupos sem prazo no ato.</p>
+    <div class="rank" id="top10"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Todos os grupos de trabalho</h2>
+    <p class="note">Clique numa linha para ver missão, objetivos, composição, todos os prazos com o respetivo
+      cálculo, e a evidência que sustenta o estado.</p>
+    <div class="controls">
+      <input type="search" id="q" placeholder="Pesquisar nome, despacho, entidade, área…" aria-label="Pesquisar">
+      <select id="fSt" aria-label="Filtrar por estado"><option value="">Todos os estados</option></select>
+      <select id="fGov" aria-label="Filtrar por governo">
+        <option value="">XXIV e XXV</option><option value="XXIV">XXIV Governo</option><option value="XXV">XXV Governo</option>
+      </select>
+      <select id="fMin" aria-label="Filtrar por área governativa"><option value="">Todas as áreas</option></select>
+      <button class="btn" id="reset" type="button">Limpar</button>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="tblwrap">
+      <table id="tbl">
+        <thead><tr>
+          <th data-s="id">ID<span class="ar">▾</span></th>
+          <th data-s="ato">Ato criador<span class="ar"></span></th>
+          <th data-s="nome">Grupo de trabalho<span class="ar"></span></th>
+          <th data-s="lead">Área governativa<span class="ar"></span></th>
+          <th data-s="pd">Prazo<span class="ar"></span></th>
+          <th data-s="est">Estado<span class="ar"></span></th>
+          <th data-s="atr">Atraso<span class="ar"></span></th>
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Nota metodológica</h2>
+    <div class="method" style="margin-top:14px">
+      <h3>Como os grupos foram encontrados</h3>
+      <p>O Diário da República não tem pesquisa por texto exato: o motor devolve correspondências difusas
+        (procurar «grupo de trabalho» devolve 22 232 atos, a maioria por conter apenas «trabalho»). O canal
+        fiável é o <b>sumário oficial</b>, redigido pela INCM para cada ato.</p>
+      <p>Foram recolhidos, mês a mês ao longo dos 31 meses do período, todos os atos da 1.ª e 2.ª séries cujo
+        sumário corresponde a «grupo de trabalho»: <b>2 726 atos</b>. Destes, <b>153</b> contêm efetivamente a
+        expressão no sumário e foram classificados manualmente em: atos de criação (106), alterações e
+        prorrogações (18), nomeações e louvores (17), atos de entidades não governamentais — tribunais,
+        universidades, assembleias regionais (12).</p>
+      <p>A <b>designação curta</b> de cada grupo foi escrita para esta tabela, para permitir ler a lista de
+        relance; o sumário oficial do Diário da República aparece sempre por baixo e é o texto que faz fé.</p>
+
+      <h3>Como os estados foram apurados</h3>
+      <p>Para cada um dos 106 atos de criação pesquisou-se no DR todos os atos publicados entre 2024-04-02 e
+        2026-10-10 que <b>citam</b> o despacho pelo número — um varrimento automático que devolveu
+        101 citações relevantes em 45 grupos. É esta a base das prorrogações, substituições e extinções.
+        A entrega foi depois confirmada, quando possível, por diploma legislativo, resolução do Conselho de
+        Ministros ou portaria que concretize o produto do grupo, e por fontes jornalísticas de referência.</p>
+      <p><b>Nunca se presumiu um estado.</b> Quando o prazo passou e não há evidência pública, o estado é
+        «Em atraso» e o campo «Evidência» diz exatamente o que foi pesquisado. Quando o ato não fixa prazo,
+        o estado é «Sem informação pública» e não é imputado atraso.</p>
+
+      <h3>Prazos e contagem de dias</h3>
+      <ul>
+        <li>«Dias úteis» exclui sábados, domingos e os feriados nacionais obrigatórios; conta-se a partir do dia
+          seguinte à publicação (art. 87.º do CPA).</li>
+        <li>«Dias» são dias seguidos, com o termo a transitar para o dia útil seguinte.</li>
+        <li>«Segundo trimestre de 2026» é lido como 30 de junho de 2026; «final do mês de X» como o último dia desse mês.</li>
+        <li>O prazo principal é o da entrega final. Prazos administrativos (designar representantes) ficam
+          registados mas não geram atraso.</li>
+        <li>Quando um prazo foi formalmente prorrogado e o <i>novo</i> prazo também já passou sem entrega, o
+          estado é «Em atraso», não «Prorrogado» — a prorrogação consta da evidência.</li>
+      </ul>
+
+      <h3>Relatório entregue ≠ política concretizada</h3>
+      <p>São coisas distintas e estão separadas. Em 9 dos 14 grupos dados como concluídos, a única evidência
+        pública de entrega é o <i>diploma posterior</i> que concretiza o trabalho — não o relatório. Nesses casos
+        o atraso é medido até à publicação desse diploma, pelo que é um <b>limite superior</b>: o grupo pode ter
+        entregado mais cedo. Só um relatório final está publicamente disponível na íntegra (reforma da
+        Segurança Social).</p>
+
+      <h3>Lacunas conhecidas</h3>
+      <ul>
+        <li>Grupos criados no articulado de um ato cujo sumário não os menciona não são capturados por este
+          método; a pesquisa por texto integral do DR é demasiado difusa para os encontrar com precisão.</li>
+        <li>Comissões, estruturas de missão e <i>task forces</i> estão deliberadamente fora da tabela
+          principal, numa lista separada de <b>32 órgãos</b> (<i>orgaos_relacionados.csv</i>). Ficaram de
+          fora as comissões de serviço, de negociação de contratos, de cogestão de áreas protegidas e as
+          comissões consultivas de planos diretores municipais — atos administrativos de rotina.</li>
+        <li>Relatórios entregues mas não publicados são invisíveis: a ausência de evidência não é evidência de
+          não-entrega, e o estado «Em atraso» deve ser lido nesse sentido.</li>
+        <li>Datas de constituição efetiva dos grupos não são publicadas; prazos contados «a partir da
+          constituição» foram calculados a partir da publicação, o que subestima ligeiramente o atraso.</li>
+      </ul>
+    </div>
+    <footer>
+      Fonte: <a href="https://diariodarepublica.pt" target="_blank" rel="noopener">Diário da República
+      Eletrónico</a>, 1.ª e 2.ª séries, de 2 de abril de 2024 a 10 de outubro de 2026. Cada linha liga ao
+      ato original; os sumários, títulos e objetivos são transcritos do próprio Diário da República.
+      Dados abertos distribuídos com esta página: <a href="grupos_de_trabalho.csv">grupos_de_trabalho.csv</a>
+      (tabela principal) e <a href="orgaos_relacionados.csv">orgaos_relacionados.csv</a> (comissões,
+      estruturas de missão e <i>task forces</i>); a versão Excel acompanha o repositório.
+      Reutilização livre com indicação da fonte.
+    </footer>
+  </section>
+</div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+  var D = window.GT, rows = D.rows, S = D.stats;
+
+  // índice n.º do ato -> URL no DR, para ligar citações no texto
+  var ACT_URL = {};
+  rows.forEach(function(r){ ACT_URL[r.ato.replace(/^.*n\.º\s/,"")] = r.url; });
+
+  var ORDER = ["Concluído no prazo","Concluído com atraso","Em curso – dentro do prazo",
+               "Prorrogado","Em atraso","Extinto / substituído","Sem informação pública"];
+  var VAR = {
+    "Concluído no prazo":"--s-ontime", "Concluído com atraso":"--s-late",
+    "Em curso – dentro do prazo":"--s-running", "Prorrogado":"--s-extended",
+    "Em atraso":"--s-overdue", "Extinto / substituído":"--s-gone",
+    "Sem informação pública":"--s-unknown"
+  };
+  function col(st){ return "var(" + (VAR[st]||"--s-unknown") + ")"; }
+  function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+  // URLs viram ligações; uma citação de um ato conhecido também.
+  function linkify(s){
+    var out = esc(s).replace(/https?:\/\/[^\s)<;]+/g, function(u){
+      var label = u.replace("https://diariodarepublica.pt/dr/detalhe/","DR: ").slice(0,58);
+      return '<a href="'+u+'" target="_blank" rel="noopener" title="'+u+'">'+label+'…</a>'; });
+    out = out.replace(/((?:Despacho|Resolução do Conselho de Ministros|Decreto-Lei|Lei|Portaria)[^,;.()]*?n\.º\s)([\d]+(?:-[A-Z])?\/\d{4})/g,
+      function(m, pre, num){
+        var u = ACT_URL[num];
+        return u ? pre+'<a href="'+u+'" target="_blank" rel="noopener">'+num+'</a>' : m;
+      });
+    return out;
+  }
+
+  /* ---------------- tiles ---------------- */
+  function pc(x){ return String(x).replace(".", ","); }   // separador decimal pt-PT
+  var overdue = S.by_status["Em atraso"]||0,
+      done = (S.by_status["Concluído no prazo"]||0)+(S.by_status["Concluído com atraso"]||0);
+  var tiles = [
+    ["Grupos criados", S.total, "64 no XXIV Governo · 42 no XXV", false],
+    ["Em atraso", overdue, pc(S.pct_overdue)+" % do total — prazo vencido, sem entrega conhecida", true],
+    ["Atraso mediano", S.median_delay, "dias, nos "+S.n_with_delay+" grupos com atraso apurável", false],
+    ["Concluídos", done, pc(S.pct_concluded)+" % — "+(S.by_status["Concluído no prazo"]||0)+" no prazo, "+(S.by_status["Concluído com atraso"]||0)+" com atraso", false]
+  ];
+  document.getElementById("tiles").innerHTML = tiles.map(function(t){
+    return '<div class="tile'+(t[3]?' flag':'')+'"><div class="k">'+t[0]+'</div>'+
+           '<div class="v">'+t[1]+'</div><div class="c">'+t[2]+'</div></div>'; }).join("");
+
+  /* ---------------- status bar + legend ---------------- */
+  var sb="", lg="";
+  ORDER.forEach(function(st){
+    var n = S.by_status[st]||0; if(!n) return;
+    var pc = n/S.total*100;
+    sb += '<div style="width:'+pc+'%;background:'+col(st)+'" title="'+esc(st)+': '+n+'"></div>';
+    lg += '<div class="lg"><span class="sw" style="background:'+col(st)+'"></span>'+
+          '<span>'+esc(st)+'</span><span class="ct">'+n+' <span class="pc">'+pc.toFixed(0)+'%</span></span></div>';
+  });
+  document.getElementById("sbar").innerHTML = sb;
+  document.getElementById("slegend").innerHTML = lg;
+
+  /* ---------------- by ministry (stacked by status) ---------------- */
+  var byLead = {};
+  rows.forEach(function(r){ (byLead[r.lead]=byLead[r.lead]||[]).push(r); });
+  var leads = Object.keys(byLead).sort(function(a,b){ return byLead[b].length-byLead[a].length; });
+  var maxLead = byLead[leads[0]].length;
+  document.getElementById("byMin").innerHTML = leads.map(function(k){
+    var g = byLead[k], w = g.length/maxLead*100;
+    var segs = ORDER.map(function(st){
+      var n = g.filter(function(r){return r.est===st;}).length;
+      return n ? '<i style="flex:'+n+';background:'+col(st)+'" title="'+esc(k+' — '+st+': '+n)+'"></i>' : "";
+    }).join("");
+    return '<div class="bar"><span class="lab" title="'+esc(k)+'">'+esc(k)+'</span>'+
+           '<span class="track" style="background:none"><span class="stackrow" style="width:'+w+'%">'+segs+'</span></span>'+
+           '<span class="n">'+g.length+'</span></div>';
+  }).join("");
+
+  /* ---------------- by month ---------------- */
+  var months=[], y=2024, m=4;
+  while(y<2026 || (y===2026 && m<=10)){ months.push(y+"-"+String(m).padStart(2,"0")); m++; if(m>12){m=1;y++;} }
+  var mc = {}; rows.forEach(function(r){ var k=r.dp.slice(0,7); mc[k]=(mc[k]||0)+1; });
+  var mx = Math.max.apply(null, months.map(function(k){ return mc[k]||0; })) || 1;
+  document.getElementById("byMonth").innerHTML = months.map(function(k){
+    var n = mc[k]||0, h = n/mx*100;
+    var isXXV = k >= "2025-06";
+    return '<span class="mcol" title="'+k+': '+n+' grupo'+(n===1?"":"s")+'">'+
+      '<i style="height:'+h+'%;background:'+(isXXV?"var(--accent)":"var(--s-running)")+';opacity:'+(n?1:0)+';min-height:'+(n?2:0)+'px"></i></span>';
+  }).join("");
+  document.getElementById("govSplit").innerHTML =
+    '<span style="flex:14">XXIV Governo · '+(S.by_gov.XXIV||0)+'</span>'+
+    '<span style="flex:17">XXV Governo · '+(S.by_gov.XXV||0)+'</span>';
+
+  /* ---------------- top 10 ---------------- */
+  var top = rows.filter(function(r){ return typeof r.atr === "number" && r.atr>0; })
+                .sort(function(a,b){ return b.atr-a.atr; }).slice(0,10);
+  var tmax = top.length ? top[0].atr : 1;
+  document.getElementById("top10").innerHTML = top.map(function(r,i){
+    return '<div class="rk"><span class="i">'+(i+1)+'</span>'+
+      '<span class="t"><b>'+esc(r.nc)+'</b> <em>· <a href="'+esc(r.url)+'" target="_blank" rel="noopener">'+
+        esc(r.ato)+'</a></em></span>'+
+      '<span class="tr"><i style="width:'+(r.atr/tmax*100)+'%"></i></span>'+
+      '<span class="d">'+r.atr+' d</span></div>';
+  }).join("");
+
+  /* ---------------- table ---------------- */
+  var tb = document.getElementById("tb"), qEl = document.getElementById("q"),
+      fSt = document.getElementById("fSt"), fGov = document.getElementById("fGov"),
+      fMin = document.getElementById("fMin"), cnt = document.getElementById("count");
+
+  ORDER.forEach(function(st){ if(S.by_status[st])
+    fSt.insertAdjacentHTML("beforeend",'<option value="'+esc(st)+'">'+esc(st)+' ('+S.by_status[st]+')</option>'); });
+  leads.forEach(function(k){
+    fMin.insertAdjacentHTML("beforeend",'<option value="'+esc(k)+'">'+esc(k)+' ('+byLead[k].length+')</option>'); });
+
+  var sortKey="id", sortDir=1, openId=null;
+
+  function hay(r){ return (r.id+" "+r.ato+" "+r.nome+" "+r.nc+" "+r.area+" "+r.min+" "+
+                           r.coord+" "+r.mem+" "+r.est).toLowerCase(); }
+
+  function detail(r){
+    var dls = (r.prazos||"").split(" || ").filter(Boolean).map(function(p){
+      var mm = p.match(/^(.*?):\s*(\S+)\s*\[(.*?)\]\s*—\s*«([\s\S]*)»$/);
+      if(!mm) return '<div class="one"><div class="h"><b>'+esc(p)+'</b></div></div>';
+      return '<div class="one"><div class="h"><b>'+esc(mm[1])+'</b><span class="dt">'+esc(mm[2])+'</span></div>'+
+             '<div class="calc">'+esc(mm[3])+'</div><div class="orig">«'+esc(mm[4])+'»</div></div>';
+    }).join("");
+    var f = function(k,v,wide){ return v ? '<div class="f'+(wide?' wide':'')+'"><div class="k">'+k+'</div><div class="v">'+v+'</div></div>' : ""; };
+    return '<div class="det-in">'+
+      '<div class="dgrid">'+
+        f("Missão (resumo)", esc(r.mRes), true)+
+        f("Missão (texto do ato)", '<div class="quote">'+esc(r.mPT)+'</div>', true)+
+        f("Coordenador", esc(r.coord))+
+        f("Participação", esc(r.pago))+
+        f("Assinado / publicado", '<span class="mono">'+esc(r.ds)+'</span> → <span class="mono">'+esc(r.dp)+'</span>')+
+        f("Emitente", esc(r.min))+
+        f("Membros", esc(r.mem), true)+
+        f("Objetivos específicos", esc(r.obj), true)+
+      '</div>'+
+      '<div class="f wide"><div class="k">Prazos fixados no ato ('+esc(r.pd!=="Sem data no ato"?"principal: "+r.pl:"sem prazo de entrega")+')</div>'+
+        '<div class="dl" style="margin-top:6px">'+(dls||'<div class="one"><div class="h"><b>O ato não fixa prazos.</b></div></div>')+'</div></div>'+
+      '<div class="f wide"><div class="k">Evidência do estado — '+esc(r.est)+(r.ent?' · entrega/ato: '+esc(r.ent):"")+'</div>'+
+        '<div class="ev" style="margin-top:6px">'+linkify(r.ev)+'</div></div>'+
+      (r.xref ? '<div class="f wide"><div class="k">Atos posteriores do DR que citam este despacho</div>'+
+        '<div class="ev" style="margin-top:6px">'+esc(r.xref)+'</div></div>' : "")+
+      (r.not ? '<div class="f wide"><div class="k">Notas</div><div class="ev" style="margin-top:6px">'+linkify(r.not)+'</div></div>' : "")+
+      '<div class="f wide"><a href="'+esc(r.url)+'" target="_blank" rel="noopener">Abrir o ato no Diário da República →</a></div>'+
+    '</div>';
+  }
+
+  function render(){
+    var q = qEl.value.trim().toLowerCase(),
+        st = fSt.value, gv = fGov.value, mn = fMin.value;
+    var list = rows.filter(function(r){
+      return (!q || hay(r).indexOf(q)>-1) && (!st || r.est===st) &&
+             (!gv || r.gov===gv) && (!mn || r.lead===mn);
+    });
+    list.sort(function(a,b){
+      var x=a[sortKey], y=b[sortKey];
+      if(sortKey==="atr"){ x = (x==null?-1:x); y = (y==null?-1:y); }
+      if(sortKey==="pd"){ x = (x==="Sem data no ato"?"9999":x); y = (y==="Sem data no ato"?"9999":y); }
+      if(typeof x==="number" && typeof y==="number") return (x-y)*sortDir;
+      return String(x).localeCompare(String(y),"pt")*sortDir;
+    });
+    cnt.textContent = list.length + (list.length===rows.length ? " grupos" : " de "+rows.length+" grupos");
+    tb.innerHTML = list.map(function(r){
+      var isOpen = r.id===openId;
+      return '<tr class="r'+(isOpen?" open":"")+'" data-id="'+r.id+'">'+
+        '<td class="num">'+esc(r.id)+'</td>'+
+        '<td class="ato"><a href="'+esc(r.url)+'" target="_blank" rel="noopener" onclick="event.stopPropagation()">'+esc(r.ato.replace("Despacho n.º ","Desp. ").replace("Resolução do Conselho de Ministros n.º ","RCM "))+'</a></td>'+
+        '<td class="nm"><b>'+esc(r.nc)+'</b><em>'+esc(r.nome)+'</em></td>'+
+        '<td>'+esc(r.lead)+'</td>'+
+        '<td class="num">'+(r.pd==="Sem data no ato"?'<span style="color:var(--faint)">—</span>':esc(r.pd))+'</td>'+
+        '<td><span class="chip" style="color:'+col(r.est)+'"><span class="dot"></span>'+esc(r.est)+'</span></td>'+
+        '<td class="num'+(r.atr?" late":"")+'">'+(r.atr!=null? r.atr+" d" : '<span style="color:var(--faint)">—</span>')+'</td>'+
+      '</tr>'+ (isOpen ? '<tr class="det"><td colspan="7">'+detail(r)+'</td></tr>' : "");
+    }).join("");
+  }
+
+  tb.addEventListener("click", function(e){
+    var tr = e.target.closest("tr.r"); if(!tr) return;
+    openId = (openId===tr.dataset.id) ? null : tr.dataset.id;
+    render();
+  });
+  document.querySelectorAll("thead th").forEach(function(th){
+    th.addEventListener("click", function(){
+      var k = th.dataset.s;
+      if(sortKey===k) sortDir = -sortDir; else { sortKey=k; sortDir = (k==="atr"?-1:1); }
+      document.querySelectorAll("thead th .ar").forEach(function(a){ a.textContent=""; });
+      th.querySelector(".ar").textContent = sortDir>0 ? "▾" : "▴";
+      render();
+    });
+  });
+  [qEl,fSt,fGov,fMin].forEach(function(el){ el.addEventListener("input", function(){ openId=null; render(); }); });
+  document.getElementById("reset").addEventListener("click", function(){
+    qEl.value=""; fSt.value=""; fGov.value=""; fMin.value=""; openId=null; render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

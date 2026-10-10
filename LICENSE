@@ -1,0 +1,33 @@
+Este repositório tem duas licenças.
+
+DADOS  — grupos_de_trabalho.csv, grupos_de_trabalho.xlsx, orgaos_relacionados.csv,
+         fonte/data/acts.json, fonte/pt.py, fonte/judgments.py
+Creative Commons Atribuição 4.0 Internacional (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/deed.pt
+Pode copiar, redistribuir, adaptar e usar comercialmente, desde que indique a fonte.
+
+CÓDIGO — index.html, fonte/pagina.html, fonte/dates.py, fonte/engine.py, fonte/build.py,
+         fonte/mkdata.py, fonte/standalone.py
+Licença MIT
+
+Copyright (c) 2026
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+TEXTOS OFICIAIS — os sumários, títulos e objetivos transcritos do Diário da República
+não estão abrangidos por estas licenças: são textos oficiais no domínio público.
